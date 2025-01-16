@@ -1,4 +1,6 @@
 import * as cheerio from 'cheerio';
+import fs from 'fs';
+import { request } from 'http';
 
 //Fetch the HTML data from website and assign to response
 const response = await fetch(
@@ -20,8 +22,8 @@ const allLinks = $('#images')
 const firstTenLinks = allLinks.slice(0, 10);
 
 // Remove "?width=300"
-const firstTenLinksWithoutWidth = firstTenLinks.map((element) =>
+const firstTenLinksClean = firstTenLinks.map((element) =>
   element.slice(0, -10),
 );
 
-console.log(firstTenLinksWithoutWidth);
+console.log(firstTenLinksClean);
