@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 
-//Fetch the HTML data from website and assign to response
+// Fetch the HTML data from website and assign to response
 const response = await fetch(
   'https://memegen-link-examples-upleveled.netlify.app/',
 );
