@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import fs from 'fs';
-import { request } from 'http';
+import https, { request } from 'https';
+import path from 'path';
 
 //Fetch the HTML data from website and assign to response
 const response = await fetch(
@@ -26,4 +27,33 @@ const firstTenLinksClean = firstTenLinks.map((element) =>
   element.slice(0, -10),
 );
 
-console.log(firstTenLinksClean);
+//Function to download images
+const downloadMeme = (url, destPath) => {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      const filePath = fs.createWriteStream(destPath);
+      res.pipe(filePath);
+      resolve(true);
+    });
+  });
+};
+
+//Use links in firstTenLinksClean array to save to /memes
+const createDownloadRequests = (firstTenLinksClean) => {
+  const requests = [];
+  firstTenLinksClean.forEach((url, index) => {
+    const filename = `${String(index + 1).padStart(2, '0')}.jpg`;
+    const destPath = `./memes/${filename}`;
+    requests.push(downloadMeme(url, destPath));
+  });
+  return requests;
+};
+// download images
+(async () => {
+  try {
+    const requests = createDownloadRequests(firstTenLinksClean);
+    await Promise.all(requests);
+  } catch (err) {
+    console.log(err);
+  }
+})();
