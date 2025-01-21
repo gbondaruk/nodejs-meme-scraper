@@ -1,5 +1,4 @@
-import fs, { mkdir } from 'node:fs';
-import { stat } from 'node:fs/promises';
+import { fs } from 'node:fs';
 import https from 'node:https';
 import * as cheerio from 'cheerio';
 
