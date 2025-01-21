@@ -1,4 +1,4 @@
-import { fs } from 'node:fs';
+import fs from 'node:fs';
 import https from 'node:https';
 import * as cheerio from 'cheerio';
 
