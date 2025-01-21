@@ -43,11 +43,18 @@ const firstTenLinksClean = firstTenLinks.map((element) =>
 
 // Function to download images
 const downloadMeme = (url, destPath) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     https.get(url, (res) => {
-      const filePath = fs.createWriteStream(destPath);
+      const filePath = fs.createWriteStream(destPath, {
+        flags: 'w',
+        encoding: null,
+      });
       res.pipe(filePath);
-      resolve(true);
+      filePath.on('finish', () => {
+        filePath.close();
+        resolve(true);
+      });
+      filePath.on('error', (err) => reject(err));
     });
   });
 };
