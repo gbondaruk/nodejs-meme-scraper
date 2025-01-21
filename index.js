@@ -1,9 +1,19 @@
+import fs, { mkdir } from 'node:fs';
+import { stat } from 'node:fs/promises';
+import https from 'node:https';
 import * as cheerio from 'cheerio';
-import fs from 'fs';
-import https, { request } from 'https';
-import path from 'path';
 
-//Fetch the HTML data from website and assign to response
+// make memes directory
+const memesFolder = './memes';
+try {
+  if (!fs.existsSync(memesFolder)) {
+    fs.mkdirSync(memesFolder);
+  }
+} catch (err) {
+  console.error(err);
+}
+
+// Fetch the HTML data from website and assign to response
 const response = await fetch(
   'https://memegen-link-examples-upleveled.netlify.app/',
 );
@@ -27,9 +37,9 @@ const firstTenLinksClean = firstTenLinks.map((element) =>
   element.slice(0, -10),
 );
 
-//Function to download images
+// Function to download images
 const downloadMeme = (url, destPath) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     https.get(url, (res) => {
       const filePath = fs.createWriteStream(destPath);
       res.pipe(filePath);
@@ -38,8 +48,8 @@ const downloadMeme = (url, destPath) => {
   });
 };
 
-//Use links in firstTenLinksClean array to save to /memes
-const createDownloadRequests = (firstTenLinksClean) => {
+// Use links in firstTenLinksClean array to save to /memes
+const createDownloadRequests = () => {
   const requests = [];
   firstTenLinksClean.forEach((url, index) => {
     const filename = `${String(index + 1).padStart(2, '0')}.jpg`;
@@ -49,7 +59,7 @@ const createDownloadRequests = (firstTenLinksClean) => {
   return requests;
 };
 // download images
-(async () => {
+await (async () => {
   try {
     const requests = createDownloadRequests(firstTenLinksClean);
     await Promise.all(requests);
