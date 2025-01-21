@@ -36,10 +36,10 @@ const allLinks = $('#images')
 // Get only first 10 links
 const firstTenLinks = allLinks.slice(0, 10);
 
-// Remove "?width=300"
-const firstTenLinksClean = firstTenLinks.map((element) =>
-  element.slice(0, -10),
-);
+// // Remove "?width=300"
+// const firstTenLinksClean = firstTenLinks.map((element) =>
+//   element.slice(0, -10),
+// );
 
 // Function to download images
 const downloadMeme = (url, destPath) => {
@@ -62,7 +62,7 @@ const downloadMeme = (url, destPath) => {
 // Use links in firstTenLinksClean array to save to /memes
 const createDownloadRequests = () => {
   const requests = [];
-  firstTenLinksClean.forEach((url, index) => {
+  firstTenLinks.forEach((url, index) => {
     const filename = `${String(index + 1).padStart(2, '0')}.jpg`;
     const destPath = `./memes/${filename}`;
     requests.push(downloadMeme(url, destPath));
@@ -72,7 +72,7 @@ const createDownloadRequests = () => {
 // download images
 await (async () => {
   try {
-    const requests = createDownloadRequests(firstTenLinksClean);
+    const requests = createDownloadRequests(firstTenLinks);
     await Promise.all(requests);
   } catch (err) {
     console.log(err);
