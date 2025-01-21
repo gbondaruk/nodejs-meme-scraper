@@ -15,6 +15,11 @@ try {
 // Fetch the HTML data from website and assign to response
 const response = await fetch(
   'https://memegen-link-examples-upleveled.netlify.app/',
+  {
+    headers: {
+      'Accept-Encoding': 'identity',
+    },
+  },
 );
 const html = await response.text();
 
