@@ -15,11 +15,6 @@ try {
 // Fetch the HTML data from website and assign to response
 const response = await fetch(
   'https://memegen-link-examples-upleveled.netlify.app/',
-  {
-    headers: {
-      'Accept-Encoding': 'identity',
-    },
-  },
 );
 const html = await response.text();
 
@@ -35,11 +30,6 @@ const allLinks = $('#images')
 
 // Get only first 10 links
 const firstTenLinks = allLinks.slice(0, 10);
-
-// // Remove "?width=300"
-// const firstTenLinksClean = firstTenLinks.map((element) =>
-//   element.slice(0, -10),
-// );
 
 // Function to download images
 const downloadMeme = (url, destPath) => {
